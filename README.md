@@ -2,6 +2,11 @@
 
 Kotlin 기반 Git 프로젝트입니다. 실제 git처럼 CLI에서 커맨드로 사용할 수 있습니다.
 
+## 실행 예시
+![](https://github.com/user-attachments/assets/97fe83e5-c822-4e5e-99a2-b43bab5c5520)
+![](https://github.com/user-attachments/assets/02def12b-b773-4354-b525-ef82d90c380f)
+
+
 ## 주요 명령어
 
 - 저장소 초기화: `./kgit.sh init`
