@@ -11,10 +11,10 @@ Kotlin 기반 Git 프로젝트입니다. 실제 git처럼 CLI에서 커맨드로
 
 - 저장소 초기화: `./kgit.sh init`
 - 파일 추가: `./kgit.sh add <파일명>`
-- 트리 오브젝트 생성: `./kgit.sh write-tree`
-- 트리 구조 출력: `./kgit.sh ls-tree <트리해시>`
-- 커밋 오브젝트 생성: `./kgit.sh commit-tree <트리해시> "커밋 메시지"`
-- 오브젝트 내용 확인: `./kgit.sh cat-file pretty-print <오브젝트해시>`
+- 트리 오브젝트 생성: `./kgit.sh write`
+- 트리 구조 출력: `./kgit.sh ls <트리해시>`
+- 커밋 오브젝트 생성: `./kgit.sh commit <트리해시> "커밋 메시지"`
+- 오브젝트 내용 확인: `./kgit.sh cat pretty-print <오브젝트해시>`
 - 태그 생성: `./kgit.sh tag <태그명> <커밋해시> "메시지"`
 
 ## 실행 방법
@@ -28,10 +28,10 @@ Kotlin 기반 Git 프로젝트입니다. 실제 git처럼 CLI에서 커맨드로
       ```sh
       ./kgit init
       ./kgit add example.txt
-      ./kgit write-tree
-      ./kgit ls-tree <트리해시>
-      ./kgit commit-tree <트리해시> "커밋 메시지"
-      ./kgit cat-file pretty-print <오브젝트해시>
+      ./kgit write
+      ./kgit ls <트리해시>
+      ./kgit commit <트리해시> "커밋 메시지"
+      ./kgit cat pretty-print <오브젝트해시>
       ./kgit tag v1.0 <커밋해시> "릴리즈 메시지"
       ```
 
