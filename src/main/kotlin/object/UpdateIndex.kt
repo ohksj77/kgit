@@ -11,7 +11,6 @@ data class UpdateIndexParam(
     val kgitDir: String,
     val add: Boolean
 ) {
-
     fun updateIndex(): Result<Unit> {
         val indexResult = openIndex(kgitDir)
         val index = indexResult.getOrElse { return Result.failure(it) }

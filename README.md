@@ -3,9 +3,9 @@
 Kotlin 기반 Git 프로젝트입니다. 실제 git처럼 CLI에서 커맨드로 사용할 수 있습니다.
 
 ## 실행 예시
+
 ![](https://github.com/user-attachments/assets/97fe83e5-c822-4e5e-99a2-b43bab5c5520)
 ![](https://github.com/user-attachments/assets/02def12b-b773-4354-b525-ef82d90c380f)
-
 
 ## 주요 명령어
 
@@ -39,6 +39,7 @@ Kotlin 기반 Git 프로젝트입니다. 실제 git처럼 CLI에서 커맨드로
 
 - `src/main/kotlin` : 주요 소스 코드
 - `object/`, `porcelain/`, `reference/`, `config/` : git 내부 구조와 유사한 기능별 패키지
+- `command/` : 명령어 처리 로직
 - `kgit` : 실행 스크립트
 - `build.gradle.kts` : 빌드 설정
 

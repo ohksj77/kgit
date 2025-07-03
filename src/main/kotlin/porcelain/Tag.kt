@@ -15,66 +15,64 @@ data class TagParam(
     val target: String,
     val message: String,
     val delete: Boolean
-)
+) {
+    fun tag(): Result<Unit> {
+        val referencePath = File("refs", "tags").resolve(tagName).path
+        if (delete) {
+            return UpdateRefParam(
+                kgitDir = kgitDir,
+                referencePath = referencePath,
+                delete = true
+            ).updateRef()
+        }
 
-fun tag(param: TagParam): Result<Unit> {
-    val referencePath = File("refs", "tags").resolve(param.tagName).path
-    if (param.delete) {
-        return UpdateRefParam(
-            kgitDir = param.kgitDir,
-            referencePath = referencePath,
-            delete = true
-        ).updateRef()
-    }
+        if (target.isEmpty()) {
+            return Result.success(Unit)
+        }
 
-    if (param.target.isEmpty()) {
-        return Result.success(Unit)
-    }
+        val objHashResult = RevParseParam(
+            kgitDir = kgitDir,
+            target = target
+        ).revParse()
+        val objHash = objHashResult.getOrElse { return Result.failure(it) }
 
-    val objHashResult = revParse(
-        RevParseParam(
-            kgitDir = param.kgitDir,
-            target = param.target
-        )
-    )
-    val objHash = objHashResult.getOrElse { return Result.failure(it) }
+        if (message.isEmpty()) {
+            return UpdateRefParam(
+                kgitDir = kgitDir,
+                referencePath = referencePath,
+                objectHash = objHash,
+                delete = false
+            ).updateRef()
+        }
 
-    if (param.message.isEmpty()) {
-        return UpdateRefParam(
-            kgitDir = param.kgitDir,
-            referencePath = referencePath,
+        val typeResult =
+            CatFileParam(
+                kgitDir = kgitDir,
+                operationType = CatFileOperationType.TYPE,
+                objectHash = objHash
+            ).catFile()
+
+        val objTypeString = typeResult.getOrElse { return Result.failure(it) }
+
+        val objType = Type.fromString(objTypeString)
+            ?: return Result.failure(IllegalArgumentException("Unknown object type: $objTypeString"))
+
+        val tagHashResult = MKTagParam(
+            kgitDir = kgitDir,
+            objectType = objType,
             objectHash = objHash,
+            name = tagName,
+            message = message,
+            tagger = user.email
+        ).mkTag()
+
+        val tagHash = tagHashResult.getOrElse { return Result.failure(it) }
+
+        return UpdateRefParam(
+            kgitDir = kgitDir,
+            referencePath = referencePath,
+            objectHash = tagHash,
             delete = false
         ).updateRef()
     }
-
-    val typeResult =
-        CatFileParam(
-            kgitDir = param.kgitDir,
-            operationType = CatFileOperationType.TYPE,
-            objectHash = objHash
-        ).catFile()
-
-    val objTypeString = typeResult.getOrElse { return Result.failure(it) }
-
-    val objType = Type.fromString(objTypeString)
-        ?: return Result.failure(IllegalArgumentException("Unknown object type: $objTypeString"))
-
-    val tagHashResult = MKTagParam(
-        kgitDir = param.kgitDir,
-        objectType = objType,
-        objectHash = objHash,
-        name = param.tagName,
-        message = param.message,
-        tagger = param.user.email
-    ).mkTag()
-
-    val tagHash = tagHashResult.getOrElse { return Result.failure(it) }
-
-    return UpdateRefParam(
-        kgitDir = param.kgitDir,
-        referencePath = referencePath,
-        objectHash = tagHash,
-        delete = false
-    ).updateRef()
 }

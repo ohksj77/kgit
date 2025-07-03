@@ -9,16 +9,16 @@ import java.nio.file.attribute.PosixFilePermission
 
 data class WriteTreeParam(
     val kgitDir: String
-)
+) {
+    fun writeTree(): Result<String> {
+        val indexResult = openIndex(kgitDir)
+        val index = indexResult.getOrElse { return Result.failure(it) }
 
-fun writeTree(param: WriteTreeParam): Result<String> {
-    val indexResult = openIndex(param.kgitDir)
-    val index = indexResult.getOrElse { return Result.failure(it) }
+        val treeResult = buildTree(index)
+        val tree = treeResult.getOrElse { return Result.failure(it) }
 
-    val treeResult = buildTree(index)
-    val tree = treeResult.getOrElse { return Result.failure(it) }
-
-    return createTreeObject(param.kgitDir, tree)
+        return createTreeObject(kgitDir, tree)
+    }
 }
 
 fun createTreeObject(kgitDir: String, tree: Map<String, Any>): Result<String> {
