@@ -121,7 +121,7 @@ class CommitCommand(private val kgitDir: String) : Command {
         val param = CommitTreeParam(
             kgitDir = kgitDir,
             objectHash = treeHash,
-            parentCommitHash = listOf(), // 향후 부모 커밋 지원 가능
+            parentCommitHash = listOf(),
             message = message,
             author = "user <user@example.com>"
         )
